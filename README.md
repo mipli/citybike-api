@@ -30,7 +30,7 @@ http://localhost:8000/list?sort=bikes
 http://localhost:8000/list?sort=vacancies
  -> list bike stations sorted by available open spots
 http://localhost:8000/list?sort=pos&lat=59.9294841332649646&lon=10.679715466302344
- -> list bike stations sorted by the given position
+ -> list bike stations sorted by the given position, ties are sorted by name
 ```
 
 ## Testing it

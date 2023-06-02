@@ -45,6 +45,14 @@ private fun createMockEngine(): MockEngine {
                             "capacity":15
                           },
                           {  
+                            "station_id":"48",
+                            "name":"8 Juni Plassen",
+                            "address":"8 Juni Plassen",
+                            "lat":59.9150596,
+                            "lon":10.7312715,
+                            "capacity":15
+                          },
+                          {  
                             "station_id":"10",
                             "name":"Sotahjørnet",
                             "address":"Sotahjørnet",
@@ -82,6 +90,15 @@ private fun createMockEngine(): MockEngine {
                             "last_reported": 1540219230,
                             "is_returning": 1,
                             "station_id": "47"
+                          },
+                          {
+                            "is_installed": 1,
+                            "is_renting": 1,
+                            "num_bikes_available": 2,
+                            "num_docks_available": 3,
+                            "last_reported": 1540219230,
+                            "is_returning": 1,
+                            "station_id": "48"
                           },
                           {
                             "is_installed": 1,
@@ -149,7 +166,7 @@ class ApplicationTest : KoinTest {
         client.get("/list").apply {
             assertEquals(HttpStatusCode.OK, status)
             val stations: List<BikeStation> = Json.decodeFromString(bodyAsText())
-            assertEquals(3, stations.size)
+            assertEquals(4, stations.size)
             assertEquals("7 Juni Plassen", stations[0].name)
         }
     }
@@ -165,7 +182,7 @@ class ApplicationTest : KoinTest {
         client.get("/list?sort=vacancies").apply {
             assertEquals(HttpStatusCode.OK, status)
             val stations: List<BikeStation> = Json.decodeFromString(bodyAsText())
-            assertEquals(3, stations.size)
+            assertEquals(4, stations.size)
             assertEquals("Sotahjørnet", stations[0].name)
         }
     }
@@ -181,7 +198,7 @@ class ApplicationTest : KoinTest {
         client.get("/list?sort=bikes").apply {
             assertEquals(HttpStatusCode.OK, status)
             val stations: List<BikeStation> = Json.decodeFromString(bodyAsText())
-            assertEquals(3, stations.size)
+            assertEquals(4, stations.size)
             assertEquals("Skøyen Stasjon", stations[0].name)
         }
     }
@@ -197,8 +214,9 @@ class ApplicationTest : KoinTest {
         client.get("/list?sort=pos&lat=59.9150596&lon=10.7312716").apply {
             assertEquals(HttpStatusCode.OK, status)
             val stations: List<BikeStation> = Json.decodeFromString(bodyAsText())
-            assertEquals(3, stations.size)
+            assertEquals(4, stations.size)
             assertEquals("7 Juni Plassen", stations[0].name)
+            assertEquals("8 Juni Plassen", stations[1].name)
         }
     }
 }

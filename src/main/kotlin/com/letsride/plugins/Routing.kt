@@ -47,14 +47,15 @@ fun Application.configureRouting() {
                 Sorting.Bikes -> unsortedStations.sortedBy(BikeStation::availableBikes).reversed()
                 Sorting.Vacancies -> unsortedStations.sortedBy(BikeStation::vacantSlots).reversed()
                 Sorting.Position -> {
-                    val longitude = query?.lon ?: return@get call.respond(HttpStatusCode.BadRequest, "Longitude required when sorting by position")
-                    val latitude = query?.lat ?: return@get call.respond(HttpStatusCode.BadRequest, "Latitude required when sorting by position")
+                    val longitude = query.lon ?: return@get call.respond(HttpStatusCode.BadRequest, "Longitude required when sorting by position")
+                    val latitude = query.lat ?: return@get call.respond(HttpStatusCode.BadRequest, "Latitude required when sorting by position")
                     val pos = Position(longitude, latitude)
-                    unsortedStations.sortedWith { a, b ->
-                        val aDelta = pos.distanceTo(a.position)
-                        val bDelta = pos.distanceTo(b.position)
-                        aDelta.compareTo(bDelta)
-                    }
+                    unsortedStations.sortedWith(
+                        compareBy(
+                            { it.position.distanceTo(pos) },
+                            BikeStation::name,
+                        ),
+                    )
                 }
             }
 
