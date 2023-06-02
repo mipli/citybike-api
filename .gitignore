@@ -1,0 +1,7 @@
+.idea
+.gradle
+/dependencies/repo
+workspace.xml
+build/
+!**/src/**/build
+!**/test/**/build
