@@ -1,6 +1,7 @@
 package com.letsride.services
 
 import com.letsride.models.BikeStation
+import com.letsride.models.Position
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -57,19 +58,21 @@ class CityBikeServiceImpl(private val clientIdentifier: String, engine: HttpClie
     }
 
     private fun convertToBikeStations(infoList: List<StationInformation>, statusList: List<StationStatus>): List<BikeStation> {
-        val paired: List<Pair<StationInformation, StationStatus>> = infoList.mapNotNull { info ->
-            val status = statusList.find { it.stationId == info.stationId }
-            if (status != null) {
-                Pair(info, status)
-            } else {
-                null
+        return infoList.mapNotNull { info ->
+            statusList.find { it.stationId == info.stationId }?.let {
+                Pair(info, it)
             }
-        }
-
-        return paired.map {
+        }.map {
             val info = it.first
             val status = it.second
-            BikeStation(info.name, info.address, 0, status.numDocksAvailable, status.numBikesAvailable)
+            BikeStation(
+                name = info.name,
+                address = info.address,
+                capacity = info.capacity,
+                vacantSlots = status.numDocksAvailable,
+                availableBikes = status.numBikesAvailable,
+                position = Position(info.lon, info.lat),
+            )
         }
     }
 

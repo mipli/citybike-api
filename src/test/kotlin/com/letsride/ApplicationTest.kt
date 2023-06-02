@@ -185,4 +185,20 @@ class ApplicationTest : KoinTest {
             assertEquals("Skøyen Stasjon", stations[0].name)
         }
     }
+
+    @Test
+    fun testFetchStationListSortedPosition() = testApplication {
+        application {
+            install(Resources)
+            configureRouting()
+            configureSerialization()
+        }
+
+        client.get("/list?sort=pos&lat=59.9150596&lon=10.7312716").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val stations: List<BikeStation> = Json.decodeFromString(bodyAsText())
+            assertEquals(3, stations.size)
+            assertEquals("7 Juni Plassen", stations[0].name)
+        }
+    }
 }
