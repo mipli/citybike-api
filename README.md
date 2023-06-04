@@ -42,6 +42,7 @@ $ gradle test
 
 ## Things to improve
 
+- Better error handling and messages if the City Bike API is producing errors
 - Should add Swagger API documentation
 - Test setup with Koin is not optimal, so there should be better ways for doing that
 - No authentication at the moment, so should add JWT or simple API key support
